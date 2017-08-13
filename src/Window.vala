@@ -201,18 +201,21 @@ public class Audience.Window : Gtk.Window {
 
         window_state_event.connect ((e) => {
             if (Gdk.WindowState.FULLSCREEN in e.changed_mask) {
+                if (player_page.fullscreened) {
+                    unmaximize ();
+                }
+
                 player_page.fullscreened = Gdk.WindowState.FULLSCREEN in e.new_window_state;
                 header.visible = !player_page.fullscreened;
             }
 
-            /*/ FIXME: Remove comments once gala bug is fixed: https://bugs.launchpad.net/gala/+bug/1602722
             if (Gdk.WindowState.MAXIMIZED in e.changed_mask) {
                 bool currently_maximixed = Gdk.WindowState.MAXIMIZED in e.new_window_state;
 
                 if (main_stack.get_visible_child () == player_page && currently_maximixed) {
                    fullscreen ();
                 }
-            }*/
+            }
 
             return false;
         });
